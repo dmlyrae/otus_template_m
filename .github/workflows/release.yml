@@ -46,8 +46,8 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           # Имя файла должно совпадать с тем, что генерирует CPack
-          asset_path: ./helloworld-0.0.${{ github.run_number }}-Linux.deb
-          asset_name: helloworld-0.0.${{ github.run_number }}-Linux.deb
+          asset_path: ./print_ip-0.0.${{ github.run_number }}-Linux.deb
+          asset_name: print_ip-0.0.${{ github.run_number }}-Linux.deb
           asset_content_type: application/vnd.debian.binary-package
   build-documentation:
     runs-on: ubuntu-latest
