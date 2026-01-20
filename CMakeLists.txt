@@ -3,6 +3,15 @@ cmake_minimum_required(VERSION 3.12)
 set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
 set(PROJECT_VERSION 0.0.${PATCH_VERSION})
 
+include(FetchContent)
+
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG release-1.12.1
+)
+FetchContent_MakeAvailable(googletest)
+
 project(print_ip VERSION ${PROJECT_VERSION})
 
 configure_file(
@@ -50,3 +59,22 @@ add_test(
     NAME output_check_test
     COMMAND bash ${CMAKE_SOURCE_DIR}/tests/test_1.sh $<TARGET_FILE:print_ip>
 )
+
+# Добавляем GTest тесты
+add_executable(print_ip_tests tests/print_ip_test.cpp)
+
+target_include_directories(print_ip_tests PRIVATE 
+    "${CMAKE_CURRENT_SOURCE_DIR}/src"
+    "${CMAKE_BINARY_DIR}"
+)
+
+target_link_libraries(print_ip_tests
+    PRIVATE
+    GTest::gtest
+    GTest::gtest_main
+    print_ip_lib
+)
+
+# Регистрируем тесты в CMake
+include(GoogleTest)
+gtest_discover_tests(print_ip_tests)
